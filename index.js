@@ -22,6 +22,15 @@ async function run() {
     try {
         const userCollection = client.db('nodeMongoCrud').collection('users');
 
+        // Read data from CRUD operation [CRUD, Find operation mongoDB website > Multiple user]
+        app.get('/users', async (req, res) => {
+            const query = {};
+            const cursor = userCollection.find(query);
+            const users = await cursor.toArray();
+            res.send(users);
+        })
+
+        // Create data from CRUD operation [CRUD, Insert operation mongoDB website >Find Multiple user]
         app.post('/users', async (req, res) => {
             const user = req.body;
             console.log(user);
