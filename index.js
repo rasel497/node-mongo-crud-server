@@ -21,13 +21,13 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
         const userCollection = client.db('nodeMongoCrud').collection('users');
-        const user = {
-            name: 'Abrar',
-            email: 'abrar@gmail.com'
-        }
-        const result = await userCollection.insertOne(user);
-        console.log(result);
+
+        app.post('/users', (req, res) => {
+            const user = req.body;
+            console.log(user);
+        })
     }
+
     finally {
 
     }
