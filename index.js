@@ -22,7 +22,7 @@ async function run() {
     try {
         const userCollection = client.db('nodeMongoCrud').collection('users');
 
-        // Read data from CRUD operation [CRUD, Find operation mongoDB website > Multiple user]
+        // Read data from CRUD operation [CRUD, > Find Multiple Document, operation mongoDB website > Multiple user]
         app.get('/users', async (req, res) => {
             const query = {};
             const cursor = userCollection.find(query);
@@ -30,7 +30,15 @@ async function run() {
             res.send(users);
         });
 
-        // Create data from CRUD operation [CRUD, Insert operation mongoDB website >Find Multiple user]
+        //  03.Update data from CRUD operation > Find a Document [from mongodb website]
+        app.get('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const user = await userCollection.findOne(query);
+            res.send(user);
+        })
+
+        // 01.Create data from CRUD operation [CRUD, Insert operation mongoDB website >Find Multiple user]
         app.post('/users', async (req, res) => {
             const user = req.body;
             console.log(user);
@@ -39,7 +47,7 @@ async function run() {
             res.send(result);
         });
 
-        // Delete from CRUD operation
+        // 02.Delete from CRUD operation
         app.delete('/users/:id', async (req, res) => {
             const id = req.params.id;
             // console.log('trying to delete', id);
@@ -47,7 +55,6 @@ async function run() {
             const result = await userCollection.deleteOne(query);
             console.log(result);
             res.send(result);
-
         });
 
     }
