@@ -38,6 +38,25 @@ async function run() {
             res.send(user);
         })
 
+        // 04. PUT 
+        app.put('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const user = req.body;
+            const option = { upsert: true }; // jodi data pao thle update kore dao na pele New user crete koro
+            // console.log(updateUser);
+            const updateUser = {
+                $set: {
+                    name: user.name,
+                    address: user.address,
+                    email: user.email
+                }
+            }
+            const result = await userCollection.updateOne(filter, updateUser, option);
+            res.send(result);
+        })
+
+
         // 01.Create data from CRUD operation [CRUD, Insert operation mongoDB website >Find Multiple user]
         app.post('/users', async (req, res) => {
             const user = req.body;
