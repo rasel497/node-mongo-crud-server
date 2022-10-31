@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 
 const app = express();
@@ -28,7 +28,7 @@ async function run() {
             const cursor = userCollection.find(query);
             const users = await cursor.toArray();
             res.send(users);
-        })
+        });
 
         // Create data from CRUD operation [CRUD, Insert operation mongoDB website >Find Multiple user]
         app.post('/users', async (req, res) => {
@@ -37,7 +37,19 @@ async function run() {
 
             const result = await userCollection.insertOne(user)
             res.send(result);
-        })
+        });
+
+        // Delete from CRUD operation
+        app.delete('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            // console.log('trying to delete', id);
+            const query = { _id: ObjectId(id) }
+            const result = await userCollection.deleteOne(query);
+            console.log(result);
+            res.send(result);
+
+        });
+
     }
 
     finally {
